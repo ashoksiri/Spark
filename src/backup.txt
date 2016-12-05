@@ -1,0 +1,16 @@
+CassandraConnector(sparkConf).withSessionDo {
+      session => session.execute("create table if not exists msrc.vmstat"+
+            "(r text,b text,swpd text, free text,buff text,cache text primary key,si text,so text,bi text,"+
+            "bo text,ins text,cs text, us text,sy text,id text,wa text,st text)") 
+      }
+      
+      
+    case class vmstat(r:String    ,b:String   ,swpd:String,
+                    free:String ,buff:String,cache:String,
+                    si :String  ,so:String  ,bi:String,
+                    bo:String   ,ins:String  ,cs:String,
+                    us:String   ,sy:String  ,id:String,
+                    wa:String   ,st:String)
+  
+  val columns = SomeColumns("r","b","swpd","free","buff","cache","si","so","bi","bo","ins","cs","us","sy","id","wa","st")
+  
