@@ -40,13 +40,19 @@ object JsonToHbase {
     val file = "file:/home/user/Documents/dataset/employees.json"
 
     val empdf = sqlContext.read.json(file)
-    empdf.printSchema()
+    empdf.printSchema
 
     val temptable = empdf.map {
 
       case Row(birth_date, emp_no, first_name, last_name, gender, hire_date) =>
 
-        employees(emp_no.asInstanceOf[Long], birth_date.toString, first_name.toString, last_name.toString, gender.toString, hire_date.toString())
+        employees(
+            emp_no.asInstanceOf[Long], 
+            birth_date.toString, 
+            first_name.toString, 
+            last_name.toString, 
+            gender.toString, 
+            hire_date.toString)
     }
 
     temptable.saveToPhoenix("employees", Seq("EMP_NO", "BIRTH_DATE", "FIRST_NAME", "LAST_NAME", "GENDER", "HIRE_DATE"), zkUrl = Some("localhost"))

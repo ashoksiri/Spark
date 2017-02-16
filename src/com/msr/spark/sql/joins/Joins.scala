@@ -45,21 +45,24 @@ object Joins {
     val deptmandf = sqlContext.createDataFrame(dept_manager, EmployeesDBSchemas.dept_manager)
     val deptdf = sqlContext.createDataFrame(departments, EmployeesDBSchemas.departments)
     
+    deptempdf.registerTempTable("dept_emp")
+    deptmandf.registerTempTable("dept_manager")
     
-    empdf.join(saldf,empdf("emp_no")===saldf("emp_no"))
+    
+  /*  empdf.join(saldf,empdf("emp_no")===saldf("emp_no"))
     .select(empdf("emp_no"),concat(empdf("first_name"),lit(" "),empdf("last_name")),saldf("salary"))
     .where(saldf("salary") > 70000).distinct().show
     
     empdf.join(ttldf,empdf("emp_no")===ttldf("emp_no"),"left")
     .select(empdf("emp_no"),concat(empdf("first_name"),lit(" "),empdf("last_name")),ttldf("title")).show
    
-    deptempdf.groupBy(deptempdf("dept_no")).count.show
+    deptempdf.groupBy(deptempdf("dept_no")).count.show*/
     
-    //select a.emp_no as manager ,a.dept_no as department ,count as employees from dept_manager a join 
-    //(select dept_no,count(emp_no) as count from dept_emp group by dept_no) as x on a.dept_no = x.dept_no ;
+    sqlContext.sql("select a.emp_no as manager ,a.dept_no as department ,count as employees from dept_manager a join"+ 
+    "(select dept_no,count(emp_no) as count from dept_emp group by dept_no) as x on a.dept_no = x.dept_no").show 
     
-    deptmandf.as("a").join(deptempdf.groupBy(deptempdf("dept_no")).count.as("x"))
-    .filter("a.dept_no = x.dept_no").select("a.emp_no","a.dept_no","x.count").show
+    /*deptmandf.as("a").join(deptempdf.groupBy(deptempdf("dept_no")).count.as("x"))
+    .filter("a.dept_no = x.dept_no").select("a.emp_no","a.dept_no","x.count").show*/
     
     // empdf.show
     //saldf.show

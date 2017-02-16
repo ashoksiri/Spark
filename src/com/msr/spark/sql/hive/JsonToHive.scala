@@ -6,6 +6,8 @@ import org.apache.spark.sql.SQLContext
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.sql.SaveMode
+
 object JsonToHive {
  
   Logger.getLogger("org").setLevel(Level.OFF)
@@ -28,5 +30,9 @@ object JsonToHive {
      val empdf = hctx.read.json(file)
     
     empdf.show
+    
+    empdf.write.format("orc").mode(SaveMode.Append).saveAsTable("employees");
+    
+    println(hctx.table("employees").count)
   }
 }

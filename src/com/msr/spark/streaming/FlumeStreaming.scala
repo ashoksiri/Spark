@@ -19,6 +19,7 @@ object FlumeStreaming {
     val ssc = new StreamingContext(sparkConf, Seconds(10))
 
     val stream = FlumeUtils.createPollingStream(ssc, "localhost", 6666, StorageLevel.MEMORY_ONLY_SER_2)
+   
     stream.foreachRDD {
       x =>
 

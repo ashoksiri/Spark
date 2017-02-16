@@ -9,6 +9,7 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import org.apache.spark.sql.hive.HiveContext
 import scala.reflect.runtime.universe
+import org.apache.spark.sql.SaveMode
 
 object CsvToHive {
 
@@ -34,7 +35,7 @@ object CsvToHive {
     val df = employee.toDF
 
     hctx.sql("show tables").show
-    df.show
+    df.write.mode(SaveMode.Append).saveAsTable("emp")
 
   }
 }

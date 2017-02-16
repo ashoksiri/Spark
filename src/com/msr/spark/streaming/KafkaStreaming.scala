@@ -13,7 +13,7 @@ object KafkaStreaming {
   Logger.getLogger("org").setLevel(Level.OFF)
   Logger.getLogger("akka").setLevel(Level.OFF)
 
-  val (zkQuorum, group, topics, numThreads) = ("localhost:2181", "kelly", "trainee", "2")
+  val (zkQuorum, group, topics, numThreads) = ("localhost:2181", "kelly", "testing", "2")
   val sparkConf = new SparkConf().setAppName("KafkaWordCount").setMaster("local[4]")
   val sc = new SparkContext(sparkConf)
   val ssc = new StreamingContext(sc, Seconds(2))

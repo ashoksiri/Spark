@@ -8,6 +8,7 @@ import org.apache.log4j.Logger
 import java.sql.Date
 import java.text.SimpleDateFormat
 import scala.reflect.runtime.universe
+import org.apache.spark.sql.SaveMode
 
 object ReadingCsv {
   Logger.getLogger("org").setLevel(Level.OFF)
@@ -15,7 +16,7 @@ object ReadingCsv {
   
   case class employees(emp_no:Long,birth_date:String,first_name:String,last_name:String,gender:String,hire_date:String)
   
-  def todate(s:String):Date=new Date(new SimpleDateFormat("yyyy-MM-dd").parse(s).getTime)
+  //def todate(s:String):Date=new Date(new SimpleDateFormat("yyyy-MM-dd").parse(s).getTime)
   
   def main(args: Array[String]): Unit = {
   
@@ -32,7 +33,7 @@ object ReadingCsv {
     
     df.show
     
-    df.repartition(1).write.format("com.databricks.spark.avro").save("hdfs://localhost:9000/user/employee")
+    df.repartition(1).write.mode(SaveMode.Append).format("com.databricks.spark.avro").save("hdfs://localhost:9000/user/employee")
     
   }
 }

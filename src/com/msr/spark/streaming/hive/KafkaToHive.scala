@@ -15,7 +15,7 @@ object KafkaToHive {
    Logger.getLogger("org").setLevel(Level.OFF)
   Logger.getLogger("akka").setLevel(Level.OFF)
 
-  val (zkQuorum, group, topics, numThreads) = ("localhost:2181", "kelly", "trainee", "2")
+  val (zkQuorum, group, topics, numThreads) = ("localhost:2181", "kelly", "testing", "2")
   val sparkConf = new SparkConf()
     .setAppName(this.getClass.getName).setMaster("local[4]")
     .set("spark.cassandra.connection.host", "10.1.7.49")
@@ -33,7 +33,7 @@ object KafkaToHive {
                     si: String, so: String, bi: String,
                     bo: String, ins: String, cs: String,
                     us: String, sy: String, id: String,
-                    wa: String, st: String)
+                    wa: String)
 
   
 
@@ -46,8 +46,10 @@ object KafkaToHive {
 
     lines.foreachRDD { rdd =>
     
-      val mytable = rdd.filter(line => !line.contains("memory")).filter(line => !line.contains("buff")).map(line => line.split("[\\s]+"))
-        .map(c => vmstat(c(1), c(2), c(3), c(4), c(5), c(6), c(7), c(8), c(9), c(10), c(11), c(12), c(13), c(14), c(15), c(16), c(17))).toDF
+      val mytable = rdd.filter(line => !line.contains("memory"))
+      .filter(line => !line.contains("buff")).map(line => line.split("[\\s]+"))
+        .map(c => 
+          vmstat(c(1), c(2), c(3), c(4), c(5), c(6), c(7), c(8), c(9), c(10), c(11), c(12), c(13), c(14), c(15), c(16))).toDF
 
       mytable.take(5).foreach(println)
       

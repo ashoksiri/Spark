@@ -17,7 +17,7 @@ object AvroToCassandra {
   Logger.getLogger("akka").setLevel(Level.OFF)
   
   case class employees(emp_no:Int,birth_date:String,first_name:String,last_name:String,gender:String,hire_date:String)
-  val Columns = SomeColumns("emp_no","birth_date","first_name","last_name","gender","hire_date")
+  val Columns = SomeColumns("emp_no","birth_date","first_name","gender","hire_date")
   
   def main(args: Array[String]): Unit =
     {
@@ -32,6 +32,7 @@ object AvroToCassandra {
      CassandraConnector(sparkConf).withSessionDo { session => 
         session.execute("create table if not exists msrc.employees(emp_no bigint primary key"+
                          ",birth_date text,first_name text ,last_name text,gender text,hire_date text)") 
+                         
                          }
     val file = "file:/home/user/Documents/dataset/employees.avro"
     
